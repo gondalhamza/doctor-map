@@ -1,0 +1,3 @@
+# WHITELIST ENV VARIABLES
+
+Dotenv.require_keys('GOOGLE_MAP_KEY')
