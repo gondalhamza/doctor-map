@@ -1,24 +1,64 @@
-# README
+# Bookings on Map, Update Location with Jobs
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+> It is a dashboard for doctor to view the list of bookings on the google map and update them with running jobs.
 
-Things you may want to cover:
+> I have used Action Cable for real time changes
 
-* Ruby version
+**The idea behind creating this application was to initialize the basic structure:**
 
-* System dependencies
 
-* Configuration
+## Installation
 
-* Database creation
 
-* Database initialization
+### Clone
 
-* How to run the test suite
+- Clone this repo to your local machine using `https://github.com/gondalhamza/doctor-map.git`
 
-* Services (job queues, cache servers, search engines, etc.)
+### Setup
 
-* Deployment instructions
+- Follow the steps to setup project on local your machine
 
-* ...
+> Create gemset and install bundler
+
+```shell
+$ gem install bundler
+$ bundle install
+```
+
+> Install yarn packages
+
+```shell
+$ yarn install
+```
+
+- Setup environment variables `GOOGLE_MAP_KEY`
+
+> Copy .env.example file to .env (configure twitter credentials from twitter developer account)
+
+```shell
+$ cp .env.example .env
+```
+
+> Setup your database
+
+```shell
+$ rake db:create
+$ rake db:migrate
+```
+
+> Run server at localhost
+
+```shell
+$ rails s
+```
+
+- Point your browser to `localhost:3000`
+
+---
+```shell
+$ redis-server
+```
+
+- for mac to start redis
+
+---
