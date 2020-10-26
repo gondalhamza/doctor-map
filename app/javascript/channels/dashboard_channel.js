@@ -15,6 +15,7 @@ consumer.subscriptions.create("DashboardChannel", {
     if(data['bookings'] != null){
 
       $('#bookings').html("");
+      
       for (i = 0; i < data['bookings'].length; i++) {
         $('#bookings').append('<li data-location="'+data['bookings'][i]["full_address"]+
           '" data-time="'+data['bookings'][i]["begins_at"]+'"class="list-group-item"> '+ 
@@ -22,8 +23,8 @@ consumer.subscriptions.create("DashboardChannel", {
           '<br><small>'+data['bookings'][i]["begins_at"]+
           '</small></li>');
       }
-
     }
+
   }
 });
 

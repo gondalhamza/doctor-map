@@ -22,6 +22,8 @@ class DashboardController < ApplicationController
 	def time_request
 	# Change time for a booking let say first booking of doctor
 		SmsJob.set(wait: 1.seconds).perform_later(Doctor.first.bookings.first)
+
+		render nothing: true
 	end
 
 	private
