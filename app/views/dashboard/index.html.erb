@@ -1,6 +1,6 @@
 <h1>Dashboard</h1>
 <script defer
-  src="https://maps.googleapis.com/maps/api/js?key=<%=ENV['GOOGLE_MAP_KEY']%>&callback=initMap">
+        src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAP_KEY'] %>&callback=initMap">
 </script>
 
 
@@ -10,120 +10,120 @@
     <div class="col-3">
       <%= link_to "Run Job", time_request_path, class: "btn btn-primary", remote: true %>
 
-			<ul class="list-group" id="bookings">
-				<% @bookings.each do |booking| %>
-					<li data-location="<%= booking.full_address %>" 
-						data-time="<%= booking.begins_at %>" class="list-group-item">
-						<%= booking.full_address %><br><small><%= booking.begins_at %></small>
-					</li>
-				<% end %>
-			</ul>
+      <ul class="list-group" id="bookings">
+        <% @bookings.each do |booking| %>
+          <li data-location="<%= booking.full_address %>"
+              data-time="<%= booking.begins_at %>" class="list-group-item">
+            <%= booking.full_address %><br><small><%= booking.begins_at %></small>
+          </li>
+        <% end %>
+      </ul>
     </div>
 
     <div class="col-9">
       <div style='width: 100%;'>
-				<div id="floating-panel">
-			    <input id="address" type="textbox" value="Oslo, NO" />
-			    <input id="submit" type="button" value="Geocode" />
-			  </div>
-			  <div id="map" style='width: 120vh; height: 80vh;'></div>
-			</div>
+        <div id="floating-panel">
+          <input id="address" type="textbox" value="Oslo, NO"/>
+          <input id="submit" type="button" value="Geocode"/>
+        </div>
+        <div id="map" style='width: 120vh; height: 80vh;'></div>
+      </div>
     </div>
 
   </div>
 </div>
 
 
-<script type="text/javascript">  
-	let map;
-	
-	initMap = function() {
-			
-    var center, marker;
-    center = { lat: 40.731, lng: -73.997 };
-    
-    const infowindow = new google.maps.InfoWindow();
-    const geocoder = new google.maps.Geocoder();
-		
-		// initialize map
-    map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 13,
-      center: center
-    });
+<script type="text/javascript">
+    let map;
 
-		// Doctor Location 
-		geocodeAddressForDoctor(geocoder, infowindow)
+    initMap = function () {
 
-		// MArkers for booking
-		BookingMarkersOnMap(geocoder, map);
+        var center, marker;
+        center = {lat: 40.731, lng: -73.997};
 
-  };
+        const infowindow = new google.maps.InfoWindow();
+        const geocoder = new google.maps.Geocoder();
 
+        // initialize map
+        map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 13,
+            center: center
+        });
 
-  // List of Location markers 
-	function loadlist() {
-	  var list = document.getElementsByClassName('list-group-item');
-		var markers = [];
+        // Doctor Location
+        geocodeAddressForDoctor(geocoder, infowindow)
 
-	  for (var i = 0; i < list.length; i++) {
-			var datagroup = [];
+        // MArkers for booking
+        BookingMarkersOnMap(geocoder, map);
 
-	  	datagroup.push(list[i].dataset.location)
-	  	datagroup.push(list[i].dataset.time)
-
-			markers.push(datagroup);
-	  }
-	  return markers;
-	}
+    };
 
 
-	// Set Markers on the map
-	function BookingMarkersOnMap(geocoder, map) {
+    // List of Location markers
+    function loadlist() {
+        var list = document.getElementsByClassName('list-group-item');
+        var markers = [];
 
-		var locations = [];
-		locations = loadlist();
+        for (var i = 0; i < list.length; i++) {
+            var datagroup = [];
 
-    for (i = 0; i < locations.length; i++) {
-     geocodeAddress(geocoder, map, address = locations[i][0], time = locations[i][1]);
-  	}
-	}
+            datagroup.push(list[i].dataset.location)
+            datagroup.push(list[i].dataset.time)
 
-  function geocodeAddress(geocoder, map, address, time) {
-    const infowindowBooking = new google.maps.InfoWindow();
-	  
-	  geocoder.geocode({ address: address }, (results, status) => {
-	    if (status === "OK") {
-	      marker = new google.maps.Marker({
-	        map: map,
-	        position: results[0].geometry.location,
-	      });
+            markers.push(datagroup);
+        }
+        return markers;
+    }
 
-	      infowindowBooking.setContent('Time: '+time);
-				infowindowBooking.open(map, marker);
 
-	    } else {
-	      alert("Geocode was not successful for the following reason: " + status);
-	    }
-	  });
-	}
+    // Set Markers on the map
+    function BookingMarkersOnMap(geocoder, map) {
 
-	function geocodeAddressForDoctor(geocoder, infowindow) {
-		var address = "<%= @doctor.full_address %>"
-    // Doctor Location 
-    geocoder.geocode({ address: address }, (results, status) => {
-	    if (status === "OK") {
-	      map.setCenter(results[0].geometry.location);
-	    	marker = new google.maps.Marker({
-	        map: map,
-	        position: results[0].geometry.location,
-	      });
+        var locations = [];
+        locations = loadlist();
 
-	      infowindow.setContent('Current Location');
-				infowindow.open(map, marker);
-	    } else {
-	      alert("Geocode was not successful for the following reason: " + status);
-	    }
-	  });
-	}
+        for (i = 0; i < locations.length; i++) {
+            geocodeAddress(geocoder, map, address = locations[i][0], time = locations[i][1]);
+        }
+    }
+
+    function geocodeAddress(geocoder, map, address, time) {
+        const infowindowBooking = new google.maps.InfoWindow();
+
+        geocoder.geocode({address: address}, (results, status) => {
+            if (status === "OK") {
+                marker = new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location,
+                });
+
+                infowindowBooking.setContent('Time: ' + time);
+                infowindowBooking.open(map, marker);
+
+            } else {
+                alert("Geocode was not successful for the following reason: " + status);
+            }
+        });
+    }
+
+    function geocodeAddressForDoctor(geocoder, infowindow) {
+        var address = "<%= @doctor.full_address %>"
+        // Doctor Location
+        geocoder.geocode({address: address}, (results, status) => {
+            if (status === "OK") {
+                map.setCenter(results[0].geometry.location);
+                marker = new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location,
+                });
+
+                infowindow.setContent('Current Location');
+                infowindow.open(map, marker);
+            } else {
+                alert("Geocode was not successful for the following reason: " + status);
+            }
+        });
+    }
 
 </script>
