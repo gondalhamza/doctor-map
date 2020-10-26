@@ -5,11 +5,11 @@ class DashboardController < ApplicationController
   def index
   	@bookings=@doctor.bookings
 
-    ActionCable.server.broadcast(
+  	ActionCable.server.broadcast(
         'bookings',
-        location: "New Location",
-        booking_list: @bookings
+        bookings: @bookings
     )
+
     # binding.pry
     respond_to do |format|
       format.html
@@ -18,7 +18,7 @@ class DashboardController < ApplicationController
   end
 
   def time_request
-		SmsJob.set(wait: 5.seconds).perform_later
+		SmsJob.set(wait: 1.seconds).perform_later(Doctor.second)
   end
 
   private

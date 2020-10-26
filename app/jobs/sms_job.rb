@@ -1,12 +1,12 @@
 class SmsJob < ApplicationJob
   queue_as :default
 
-  def perform(*args)
+  def perform(doctor)
     p 'hello from HelloWorldJob'
 
     ActionCable.server.broadcast(
         'bookings',
-        location: "Job Location"
+        bookings: doctor.bookings
     )
   end
 

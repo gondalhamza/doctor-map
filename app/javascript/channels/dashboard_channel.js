@@ -4,7 +4,6 @@ consumer.subscriptions.create("DashboardChannel", {
   connected() {
     console.log("reseived");
 
-    alert("Connected");
   },
 
   disconnected() {
@@ -12,8 +11,14 @@ consumer.subscriptions.create("DashboardChannel", {
   },
 
   received(data) {
-    $('#message').append('<p class="form-control"> '+ data.location+'</p>');
+// debugger
+    if(data['bookings'] != null){
+      $('#bookings').html("");
+      for (i = 0; i < data['bookings'].length; i++) {
+        $('#bookings').append('<li class="list-group-item"> '+ data['bookings'][i]["full_address"]+'</li>');
+      }
+    }
+
   }
 });
 
-export default DashboardChannel;
