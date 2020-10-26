@@ -12,8 +12,6 @@ consumer.subscriptions.create("DashboardChannel", {
   },
 
   received(data) {
-    console.log("reseived");
-    console.log(data);
     $('#message').append('<p class="form-control"> '+ data.location+'</p>');
   }
 });

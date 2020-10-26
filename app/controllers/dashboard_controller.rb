@@ -10,11 +10,15 @@ class DashboardController < ApplicationController
         location: "New Location",
         booking_list: @bookings
     )
-    binding.pry
+    # binding.pry
     respond_to do |format|
       format.html
       format.json {render json: @users}
     end
+  end
+
+  def time_request
+		SmsJob.set(wait: 5.seconds).perform_later
   end
 
   private
