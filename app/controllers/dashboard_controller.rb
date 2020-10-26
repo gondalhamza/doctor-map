@@ -1,33 +1,34 @@
+require 'services/booking_service'
+
 class DashboardController < ApplicationController
+	include BookingService
+
 	before_action :set_doctor, only: [:index]
-	before_action :markers_hash, only: [:index]
 
-  def index
-  	@bookings=@doctor.bookings
+	def index
+		@bookings = BookingService.arrange(@doctor.bookings)
 
-  	ActionCable.server.broadcast(
-        'bookings',
-        bookings: @bookings
-    )
+		ActionCable.server.broadcast(
+			'bookings',
+			bookings: @bookings
+		)
 
-    # binding.pry
-    respond_to do |format|
-      format.html
-      format.json {render json: @users}
-    end
-  end
+		respond_to do |format|
+			format.html
+			format.json {render json: @bookings}
+		end
+	end
 
-  def time_request
-		SmsJob.set(wait: 1.seconds).perform_later(Doctor.second)
-  end
+	def time_request
+	# Change time for a booking let say first booking of doctor
+		SmsJob.set(wait: 1.seconds).perform_later(Doctor.first.bookings.first)
+	end
 
-  private
-  def set_doctor
-  	@doctor=Doctor.first
-  end
-
-  def markers_hash
-  	@users=User.where(doctor: @doctor)
-    { page: 1, count: 200 }
-  end
+	private
+	def set_doctor
+ 		@doctor=Doctor.first
+	end  
+	def set_booking
+		@booking=Booking.find_by_id parmas[:id]
+	end
 end

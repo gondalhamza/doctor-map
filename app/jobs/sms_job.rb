@@ -1,13 +1,12 @@
 class SmsJob < ApplicationJob
   queue_as :default
 
-  def perform(doctor)
-    p 'hello from HelloWorldJob'
+  def perform(booking)
 
-    ActionCable.server.broadcast(
-        'bookings',
-        bookings: doctor.bookings
-    )
+  	response = "YES"
+  	# If response of Sms is YES
+  	if(response == "YES")
+			SmsResponseJob.set(wait: 1.seconds).perform_later(booking)
+		end
   end
-
 end

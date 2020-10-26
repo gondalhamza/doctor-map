@@ -1,9 +1,9 @@
 import consumer from "./consumer"
 
 consumer.subscriptions.create("DashboardChannel", {
+  
   connected() {
-    console.log("reseived");
-
+    console.log("conencted");
   },
 
   disconnected() {
@@ -11,14 +11,19 @@ consumer.subscriptions.create("DashboardChannel", {
   },
 
   received(data) {
-// debugger
+
     if(data['bookings'] != null){
+
       $('#bookings').html("");
       for (i = 0; i < data['bookings'].length; i++) {
-        $('#bookings').append('<li class="list-group-item"> '+ data['bookings'][i]["full_address"]+'</li>');
+        $('#bookings').append('<li data-location="'+data['bookings'][i]["full_address"]+
+          '" data-time="'+data['bookings'][i]["begins_at"]+'"class="list-group-item"> '+ 
+          data['bookings'][i]["full_address"]+
+          '<br><small>'+data['bookings'][i]["begins_at"]+
+          '</small></li>');
       }
-    }
 
+    }
   }
 });
 
