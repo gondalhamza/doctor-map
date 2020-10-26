@@ -5,7 +5,13 @@ class DashboardController < ApplicationController
   def index
   	@bookings=@doctor.bookings
 
-  	respond_to do |format|
+    ActionCable.server.broadcast(
+        'bookings',
+        location: "New Location",
+        booking_list: @bookings
+    )
+    binding.pry
+    respond_to do |format|
       format.html
       format.json {render json: @users}
     end
